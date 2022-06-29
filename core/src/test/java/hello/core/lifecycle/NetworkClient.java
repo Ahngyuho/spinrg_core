@@ -1,13 +1,17 @@
 package hello.core.lifecycle;
 
-public class NetworkClient {
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+public class NetworkClient  {
     //접속해야 할 서버 url
     private String url;
 
+
+
     public NetworkClient(){
         System.out.println("생성자 호출 ,url = " + url);
-        connect();
-        call("초기화 연결 메시지");
+
     }
 
     public void setUrl(String url){
@@ -22,8 +26,21 @@ public class NetworkClient {
         System.out.println("call: " +url +" message = " + message);
     }
 
-    public void disconnect(){
+    @PostConstruct
+    public void init() {
+        System.out.println("NetworkClient.init");
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    public void disConnect(){
+        System.out.println("close + " + url);
+    }
+
+    @PreDestroy
+    public void close(){
         System.out.println("close: " + url);
+        disConnect();
     }
 
 }
